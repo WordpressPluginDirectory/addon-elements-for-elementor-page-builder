@@ -553,122 +553,156 @@ var popupInstance = [];
           $scope.css("background-image", gradient_color);
         }
       }
-    };
+	};
+	  
+	//   var jsEscaping = function (str) {
+	// 	return String(str).replace(/[^\w. ]/gi, function(c){
+	// 		return '\\u'+('0000'+c.charCodeAt(0).toString(16)).slice(-4);
+	// 	});
+	// }
 
-	  var EaePopup = function ($scope, $) {
-		// To assign event
-		const eaePopupLoaded = new Event("eaePopupLoaded");
-		$preview_modal = $scope.find(".eae-popup-wrapper").data("preview-modal");
-		var effect = $scope.find(".eae-popup-wrapper").data("effect");
-		$close_btn_type = $scope
-			.find(".eae-popup-wrapper")
-			.data("close-button-type");
-		$close_btn = $scope.find(".eae-popup-wrapper").data("close-btn");
-		if ($close_btn_type == "icon") {
-			$close_btn_html = '<i class="eae-close ' + $close_btn + '"> </i>';
-		} else {
-			$close_btn_html =
-				'<svg class="eae-close" style="-webkit-mask: url(' +
-				$close_btn +
-				"); mask: url(" +
-				$close_btn +
-				'); "></svg>';
-		}
-	
-		/* var eae_popup = $scope.find('.eae-popup-container');
+    var EaePopup = function ($scope, $) {
+      // To assign event
+      const eaePopupLoaded = new Event("eaePopupLoaded");
+      $preview_modal = $scope.find(".eae-popup-wrapper").data("preview-modal");
+      var effect = $scope.find(".eae-popup-wrapper").data("effect");
+      $close_btn_type = $scope
+        .find(".eae-popup-wrapper")
+        .data("close-button-type");
+		$close_btn =  $scope.find(".eae-popup-wrapper").data("close-btn");
+      if ($close_btn_type == "icon") {
+        $close_btn_html = '<i class="eae-close ' + $close_btn + '"> </i>';
+      } else {
+        $close_btn_html =
+          '<svg class="eae-close" style="-webkit-mask: url(' +
+          $close_btn +
+          "); mask: url(" +
+          $close_btn +
+          '); "></svg>';
+      }
+    
+		var eae_popup = $scope.find('.eae-popup-container');
 		var eae_popup_id = eae_popup.attr('id');
-		popupInstance[eae_popup_id] = eae_popup.find('.eae-popup-content').html();
-		eae_popup.find('.eae-popup-content').html('');
+		if (typeof popupInstance[eae_popup_id] === 'undefined' || popupInstance[eae_popup_id] === null) {
+			popupInstance[eae_popup_id] = eae_popup.find('.eae-popup-content').html();
+			eae_popup.find('.eae-popup-content').html('');
+		}
+		
 		var popup_link = $scope.find(".eae-popup-wrapper .eae-popup-link");
 		popup_link.on('click', function () {
-			eae_popup.find('.eae-popup-content').html(popupInstance[eae_popup.attr('id')]);
-		}); */
-
-      $magnific = $scope.find(".eae-popup-link").eaePopup({
-        type: "inline",
-
-        disableOn: 0,
-
-        key: null,
-
-        midClick: false,
-
-        mainClass:
-          "eae-popup eae-popup-" +
-          $scope.find(".eae-popup-link").data("id") +
-          " eae-wrap-" +
-          $scope.find(".eae-popup-link").data("ctrl-id"),
-
-        preloader: true,
-
-        focus: "", // CSS selector of input to focus after popup is opened
-
-        closeOnContentClick: false,
-
-        closeOnBgClick: true,
-
-        closeBtnInside: $scope.find(".eae-popup-wrapper").data("close-in-out"),
-
-        showCloseBtn: true,
-
-        enableEscapeKey: true,
-
-        modal: false,
-
-        alignTop: false,
-
-        removalDelay: 200,
-
-        prependTo: null,
-
-        fixedContentPos: true,
-
-        fixedBgPos: "auto",
-
-        overflowY: "auto",
-
-        closeMarkup: $close_btn_html,
-
-        tClose: "Close (Esc)",
-
-        tLoading: "Loading...",
-
-        autoFocusLast: true,
-
-        callbacks: {
-            beforeOpen: function() {
-                if(effect != ''){
-                    this.st.mainClass =  "eae-popup eae-popup-" +
-                    $scope.find(".eae-popup-link").data("id") +
-                    " eae-wrap-" + $scope.find(".eae-popup-link").data("ctrl-id")+" mfp-"+effect;
-                }
-            },
-            open : function(){
-              
-           /*    var id = $scope.find(".eae-popup-link").data("id");
-              var swiper_container =  $('body').find('.eae-popup-' + id + ' .eae-swiper-outer-wrapper .eae-swiper-container');
-              window.sswiper = swiper_container.swiper;
-              sswiper.update();
-              console.log(swiper_container); */
-              var id = $scope.find(".eae-popup-link").data("id");
-              var wrapper = jQuery('.eae-popup-' + id + ' .elementor-element');
-              window.dispatchEvent(new Event("resize"));
-				      // To trigger the Event
-              
-			      },
-      
-			/* close: function () {
-				eae_popup.find('.eae-popup-content').html('');	
-			} */
-          },
+		  
+			eae_popup_id = jQuery(this).data('id');
+			eae_popup_arr = jQuery('.eae-popup-container.eae-popup-' + eae_popup_id); //Its working
+			eae_popup_arr.each(function (index, element) {
+			jQuery(element).find('.eae-popup-content').html(popupInstance[eae_popup_id]);
+		});
+		//eae_popup.find('.eae-popup-content').html(popupInstance[eae_popup_id]);
       });
-
-      if ($preview_modal == "yes") {
-        if ($scope.hasClass("elementor-element-edit-mode")) {
-          $scope.find(".eae-popup-link").click();
+  
+        $magnific = $scope.find(".eae-popup-link").eaePopup({
+          type: "inline",
+  
+          disableOn: 0,
+  
+          key: null,
+  
+          midClick: false,
+  
+          mainClass:
+            "eae-popup eae-popup-" +
+            $scope.find(".eae-popup-link").data("id") +
+            " eae-wrap-" +
+            $scope.find(".eae-popup-link").data("ctrl-id"),
+  
+          preloader: true,
+  
+          focus: "", // CSS selector of input to focus after popup is opened
+  
+          closeOnContentClick: false,
+  
+          closeOnBgClick: true,
+  
+          closeBtnInside: $scope.find(".eae-popup-wrapper").data("close-in-out"),
+  
+          showCloseBtn: true,
+  
+          enableEscapeKey: true,
+  
+          modal: false,
+  
+          alignTop: false,
+  
+          removalDelay: 200,
+  
+          prependTo: null,
+  
+          fixedContentPos: true,
+  
+          fixedBgPos: "auto",
+  
+          overflowY: "auto",
+  
+          closeMarkup: $close_btn_html,
+  
+          tClose: "Close (Esc)",
+  
+          tLoading: "Loading...",
+  
+          autoFocusLast: true,
+  
+        callbacks: {
+        beforeOpen: function () {
+          if (effect != '') {
+            this.st.mainClass = "eae-popup eae-popup-" +
+              $scope.find(".eae-popup-link").data("id") +
+              " eae-wrap-" + $scope.find(".eae-popup-link").data("ctrl-id") + " mfp-" + effect;
+          }
+  
+        },
+        open: function () {
+          var id = $scope.find(".eae-popup-link").data("id");
+          var wrapper = jQuery('.eae-popup-' + id + '.eae-popup-container .eae-modal-content');
+			eae_element_reinitialize(wrapper);
+			var cf7 = wrapper.find('.wpcf7-form');
+			//console.log(cf7);
+			if (cf7.length > 0) {
+				cf7.each(function (index, element) {
+					wpcf7.init(element);
+				});
+			}
+        },
+        
+        afterClose: function () {
+          var eae_popup = $scope.find('.eae-popup-container');
+          eae_popup.find('.eae-popup-content').html('');
+        },
+            },
+        });
+  
+        if ($preview_modal == "yes") {
+          if ($scope.hasClass("elementor-element-edit-mode")) {
+            $scope.find(".eae-popup-link").click();
+          }
         }
+      };
+      
+      var eae_element_reinitialize = function (wrapper) {
+        wrapper.find('.e-con').each(function(){
+          elementorFrontend.elementsHandler.runReadyTrigger(jQuery(this));
+        });
+  
+        wrapper.find('.elementor-section').each(function(){
+          elementorFrontend.elementsHandler.runReadyTrigger(jQuery(this));
+        });
+  
+        wrapper.find('.elementor-column').each(function(){
+          elementorFrontend.elementsHandler.runReadyTrigger(jQuery(this));
+        });
+        
+        wrapper.find('.elementor-widget').each(function(){
+          elementorFrontend.elementsHandler.runReadyTrigger(jQuery(this));
+        });
       }
-    };
 
     var EAETestimonial = function ($scope, $) {
       if ($scope.find(".eae-grid-wrapper").hasClass("eae-masonry-yes")) {
@@ -894,72 +928,73 @@ var popupInstance = [];
       );
     };
 
-    var TimelineHandler = function ($scope, $) {
-      set_progress_bar();
-      function set_progress_bar() {
-        var pb = $scope.find(".eae-timline-progress-bar");
-        var items = $scope.find(".eae-timeline-item");
-        var tl = $scope.find(".eae-timeline");
-        const offset = tl.data("top-offset");
-        var h = $(tl).height();
-        var last_offset =
-          $(items).last().find(".eae-tl-icon-wrapper").offset().top -
-          $(items[0]).parent().offset().top;
-        var icon_width = $scope.find(".eae-tl-icon-wrapper");
-
-        $(pb).css(
-          "top",
-          $(items[0]).find(".eae-tl-icon-wrapper").offset().top -
-            $(items[0]).parent().offset().top
-        );
-        $(pb).css("bottom", h - last_offset);
-        $(pb).css(
-          "left",
-          icon_width.eq(0)[0].offsetLeft + icon_width.eq(0).width() / 2
-        );
-        $(pb).css("display", "block");
-        
-        items.each(function (index, value) {
-          var waypoint = new Waypoint({
-            element: $(value),
-            handler: function (direction) {
-              if (direction == "down") {
-                $(value).addClass("eae-tl-item-focused");
-              } else {
-                $(value).removeClass("eae-tl-item-focused");
-              }
-            },
-            offset: offset,
+    var TimelineHandler = function ($scope, $){
+      const wid = $scope.data("id");
+      const wid_class = ".elementor-element-" + wid;
+      const timeline = document.querySelector(wid_class);
+      const timelineWrapper = timeline.querySelector('.eae-timeline');
+      const offsetTop  = timelineWrapper.dataset.topOffset;
+      const items = timeline.querySelectorAll(".eae-timeline-item");
+      const items_icon = timeline.querySelectorAll(".eae-tl-icon-wrapper");
+      const progress_bar = timeline.querySelector(".eae-timline-progress-bar");
+      const progressInner = timeline.querySelector('.eae-pb-inner-line');
+      const progressBarStop = items_icon[items_icon.length - 1].getBoundingClientRect().bottom;
+      //console.log('timeline', timeline);
+      setProgressBar();
+      onScroll();
+      window.addEventListener('resize', () => {
+        setProgressBar();
+      });
+      document.addEventListener('scroll', () => {
+        if (window.requestAnimationFrame) {
+          window.requestAnimationFrame(() => {
+            onScroll();
           });
-        });
+        } else {
+          onScroll();
+        }
+      });
+
+      function setProgressBar() {
+        const first_card = items[0].getBoundingClientRect();
+        const last_card = items[items.length - 1].getBoundingClientRect();
+        const first_icon_space =  items_icon[0].getBoundingClientRect().bottom - first_card.top;
+        const first_item_icon = items_icon[0].getBoundingClientRect();
+        const progress_bar_left = items_icon[0].offsetLeft + items_icon[0].offsetWidth / 2;
+        const last_item_icon = items_icon[items_icon.length - 1].getBoundingClientRect();
+        progress_bar.style.height = last_item_icon.top - first_item_icon.bottom + "px";
+        progress_bar.style.top = first_icon_space + "px";
+        progress_bar.style.left = progress_bar_left + "px";
+        progress_bar.style.display = 'block';
+        //progressInner.style.maxHeight = last_item_icon.bottom - first_item_icon.top + "px";
+        // progress_bar.style.top = first_item_icon.top + "px";
+        // progress_bar.style.bottom = first_item_icon.top + "px";
+        // console.log('first Icon', first_item_icon);
       }
 
-      function progress_bar_increment() {
-        var pb = $scope.find(".eae-timline-progress-bar");
-        var tm = $scope.find(".eae-timeline");
-        const offset = tm.data("top-offset");
-        //jQuery(".eae-timline-progress-bar").css('top', $scope.find(".eae-timeline").offset().top + 50);
-        $scope
-          .find(".eae-pb-inner-line")
-          .css(
-            "height",
-            $(window).scrollTop() -
-              $scope.find(".eae-timeline").offset().top +
-              offset
-          );
-        $scope
-          .find(".eae-pb-inner-line")
-          .css(
-            "max-height",
-            $scope.find(".eae-pb-inner-line").parent().height()
-          );
+      function onScroll(){
+        const progressInner = timeline.querySelector('.eae-pb-inner-line');
+        const scrollTop = Math.abs(window.scrollY + parseFloat(offsetTop));
+        const wrapperOffsetTop = timelineWrapper.getBoundingClientRect().top + window.scrollY;
+        const lastIconBottom = items_icon[items_icon.length - 1].getBoundingClientRect().bottom + window.scrollY;
+        // && window.scrollY < timelineWrapper.getBoundingClientRect().bottom + window.scrollY
+        if (scrollTop > wrapperOffsetTop ) {
+          progressInner.style.height = scrollTop - wrapperOffsetTop + 'px';
+          //console.log('scrollTop', scrollTop);
+          items.forEach((item, index) => {
+            let itemOffsetTop = item.getBoundingClientRect().top + window.scrollY;
+            if(scrollTop > itemOffsetTop){
+              item.classList.add('eae-tl-item-focused');
+            }else{
+              item.classList.remove('eae-tl-item-focused');
+            }
+          });
+        } else{
+          items[0].classList.remove('eae-tl-item-focused');
+        }
       }
+    }
 
-      // listen for events
-      //window.addEventListener("load", set_progress_bar);
-      window.addEventListener("resize", set_progress_bar);
-      window.addEventListener("scroll", progress_bar_increment);
-    };
 
     function eaeSetCookie(cname, cvalue, exdays) {
       var d = new Date();
@@ -2732,29 +2767,42 @@ var popupInstance = [];
         }
         $(prgInner).attr("style", "width :" + skill_value + "%");
       }
-
       $wrapper.each(function (index, value) {
-        var waypoint = new Waypoint({
-          element: value,
-          skill_value: $(value).find(".eae-pb-bar-skill"),
-          valueElem: $(value).find(".eae-pb-bar-value"),
-          prgBar: $(value).find(".eae-pb-bar-bar"),
-          prgInner: $(value).find(".eae-pb-bar-inner"),
-          handler: function (direction) {
-            if (direction == "down") {
-              if (!$(valueELem).hasClass("js-animated")) {
-                $(valueELem).addClass("js-animated");
+          const observerOptions = {
+            root: null, // This is the viewport
+            rootMargin: "0px 0px -100px 0px", // Trigger when 200px above the bottom
+            threshold: 0, // Trigger as soon as even one pixel is visible
+          };
+          let lastScrollY = window.scrollY;
+          const observerCallback = (entries) => {
+            entries.forEach((entry) => {
+            //console.log('entries', entry);
+              const currentScrollY = window.scrollY;
+              if (entry.isIntersecting) {
+                let valueElem = entry.target.querySelector(".eae-pb-bar-value");
+                let skillBar =  entry.target.querySelector(".eae-pb-bar-skill");
+                let prgInner = entry.target.querySelector(".eae-pb-bar-inner");
+                if(valueElem != null && !valueElem.classList.contains("js-animated")){
+                  valueElem.classList.add("js-animated");
+                }
+                if(skillBar != null && !skillBar.classList.contains("js-animated")){
+                  skillBar.classList.add("js-animated");
+                }
+                if(prgInner != null && !prgInner.classList.contains("js-animated")){
+                  prgInner.classList.add("js-animated");
+                }
+              // Only add the animation class when scrolling down
+              } else if (!entry.isIntersecting) {
+              // Optionally, remove the class when scrolling up or out of view
+                  entry.target.classList.remove("animate");
               }
-              if (!$(prgInner).hasClass("js-animated")) {
-                $(prgInner).addClass("js-animated");
-              }
-              if (!$(skillELem).hasClass("js-animated")) {
-                $(skillELem).addClass("js-animated");
-              }
-            }
-          },
-          offset: "bottom-in-view",
-        });
+      
+              lastScrollY = currentScrollY;
+            });
+          };
+
+          const observer = new IntersectionObserver(observerCallback, observerOptions);
+          observer.observe(value);
       });
     };
 
@@ -3275,49 +3323,43 @@ var popupInstance = [];
           reverseDirection: slider_data.autoplay.reverseDirection,
         };
       }
-      if ("undefined" === typeof Swiper) {
-        const asyncSwiper = elementorFrontend.utils.swiper;
-        new asyncSwiper(jQuery(
-          ".elementor-element-" +
-            wid +
-            " .eae-swiper-outer-wrapper .eae-swiper-container"),
-          sliderData
-        ).then((newSwiperInstance) => {
-          sswiper = newSwiperInstance;
-        });
-      } else {
-        window.sswiper = new Swiper(
-          ".elementor-element-" +
-            wid +
-            " .eae-swiper-outer-wrapper .eae-swiper-container",
-          sliderData
-        );
-        $(
-          ".elementor-element-" +
-            wid +
-            " .eae-swiper-outer-wrapper .eae-swiper-container"
-        ).css("visibility", "visible");
-      }
-
-      if (typeof slider_data.autoplay !== "undefined") {
-        let pause_on_hover = slider_data.autoplay.pauseOnHover;
-        if (pause_on_hover == "yes") {
-          jQuery(wClass + " .eae-swiper-container").hover(
-            function () {
-              if(sswiper != undefined){
-                sswiper.autoplay.stop();
-                sswiper.thumbs.swiper.autoplay.stop();
-              }
-            },
-            function () {
-              if(sswiper != undefined){
-                sswiper.autoplay.start();
-                sswiper.thumbs.swiper.autoplay.start();
-              }
+      swiperContainer = jQuery(".elementor-element-" + wid + " .eae-swiper-outer-wrapper .eae-swiper-container");
+      const asyncSwiper = elementorFrontend.utils.swiper;
+      if(swiperContainer !== null && swiperContainer.length === 0){
+        return;
+      }else{
+        new asyncSwiper(jQuery(swiperContainer), sliderData).then((newSwiperInstance) => {
+          const sswiper = newSwiperInstance;
+          const pause_on_hover = slider_data.pauseOnHover;
+          if(slider_data.loop == 'yes'){
+            after_swiper_load_func(sswiper , wid);
+          }
+          if (pause_on_hover == 'yes') {
+              pause_on_hover_func(sswiper, pause_on_hover, wid , slider_data);
+          }
+          if (typeof slider_data.autoplay !== "undefined") {
+        
+            let pause_on_hover = slider_data.pauseOnHover;
+            if (pause_on_hover == 'yes') {
+              jQuery(wClass + " .eae-swiper-container").hover(
+                function () {
+                  if(sswiper != undefined){
+                    sswiper.autoplay.stop();
+                    sswiper.thumbs.swiper.autoplay.stop();
+                  }
+                },
+                function () {
+                  if(sswiper != undefined){
+                    sswiper.autoplay.start();
+                    sswiper.thumbs.swiper.autoplay.start();
+                  }
+                }
+              );
             }
-          );
-        }
-      }
+            
+          }
+		    });
+      } 
     };
 
     // Cf Styler
@@ -3331,26 +3373,37 @@ var popupInstance = [];
     };
 
     let EAEChart = function ($scope, $) {
+
       const Chart_Outer_Wrapper = $scope.find(".eae-chart-outer-container");
       const cid = $scope.data("id");
-      const chartclass = ".elementor-element-" + cid;
+      const chartClass = ".elementor-element-" + cid;
+      const chart = document.querySelector(chartClass + " .eae-chart-outer-container");
       const chart_canvas = $scope.find("#eae-chart-canvas");
       let settings = Chart_Outer_Wrapper.data("settings");
       const pie_chart = $scope.find(".eae-chart-outer-container");  
-      pie_chart.each(function (index,value){
-        var waypoint =new Waypoint({
-          element:value,
-          handler: function (direction) {
-                  if (direction == "down") {
-                    if(!value.classList.contains("trigger")){
-                      value.classList.add("trigger");
-                      new Chart(chart_canvas, settings);
-                    }                
-                  } 
-                },
-                offset:'70%'
-          });
-      });
+      // Use Observer Instersection
+
+      const observerOptions = {
+        root: null, // Observe relative to the viewport
+        threshold: 0.3 // 70% visibility corresponds to 0.3 as it means 30% is outside
+      };
+
+      const observerCallback = (entries, observer) => {
+        entries.forEach(entry => {
+          const chartElement = entry.target;
+          if (entry.isIntersecting) {
+            // When the chart comes into view
+            if (!chartElement.classList.contains('trigger')) {
+              chartElement.classList.add('trigger');
+              new Chart(chart_canvas, settings); // Initialize chart
+            }
+            // Optionally, unobserve the element if you only want it to trigger once
+            observer.unobserve(chartElement);
+          }
+        });
+      };
+      const observer = new IntersectionObserver(observerCallback, observerOptions);
+      observer.observe(chart);
     };
 
     let EAETable = function ($scope, $) {
@@ -3711,8 +3764,9 @@ var popupInstance = [];
     }
 
     const pause_on_hover_func = function(mswiper, pause_on_hover, wid) {
-      //console.log('called');
+      
       jQuery('.elementor-element-' + wid + ' .eae-swiper-container').hover(function () {
+        
           mswiper.autoplay.stop();
       }, function () {
           mswiper.autoplay.start();
@@ -3778,7 +3832,6 @@ var popupInstance = [];
    
 const EAERadialChart = function($scope){
   const Chart_Wrapper = $scope.find(".eae-radial-chart-container");
-   
   const pie_chart = $scope.find(".eae-radial-chart");    
   let settings = Chart_Wrapper.data("chart");
   if(settings.type=='polarArea' && settings.enablePercentage=='true'){

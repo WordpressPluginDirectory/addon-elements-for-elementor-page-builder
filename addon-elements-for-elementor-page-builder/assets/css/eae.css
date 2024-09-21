@@ -2144,6 +2144,7 @@ new comment
   bottom: 50px;
   position: absolute;
   transform: translateX(-50%);
+  overflow: hidden;
 }
 
 .eae-timeline-item {
@@ -13509,3 +13510,5 @@ padding: 50px;
 .elementor-form .eae-form-field select[multiple] {
     height: auto;
 }
+
+.wpcf7-spinner:not(:first-of-type) { display: none !important; visibility: hidden !important; }

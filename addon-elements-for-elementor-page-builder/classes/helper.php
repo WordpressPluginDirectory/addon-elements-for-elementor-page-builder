@@ -49,13 +49,29 @@ class Helper {
 
 	public function ajax_refresh_insta_cache() {
 		
-		if(!wp_verify_nonce($_REQUEST['nonce'], 'wp_eae_elementor_editor_nonce')){
-			return wp_send_json_error( 'Invalid Nonce' );
+		// Verify the nonce
+		if (wp_verify_nonce($_REQUEST['nonce'], 'wp_eae_elementor_editor_nonce') == false) {
+			return wp_send_json_error('Invalid Nonce');
 		}
-		$transient_key = $_REQUEST['transient_key'];
+		// Get Current Post ID
+		$document = EPlugin::$instance->documents->get( $_REQUEST['post_id'] );
+		if ( ! $document || ! $document->is_editable_by_current_user() ) {
+			return wp_send_json_error('Invalid User, You are not allowed to edit this post');
+		}
+		
+		// Sanitize the transient key
+		$transient_key = sanitize_text_field($_REQUEST['transient_key']);
+	
+		// Check if the transient key starts with 'eae_insta_fetched_data_'
+		if (strpos($transient_key, 'eae_insta_fetched_data_') !== 0) {
+			return wp_send_json_error('Invalid Transient Key');
+		}
+		
+		// Delete the transient
 		$result = delete_transient($transient_key);
 		
-		return wp_send_json_success( $result );
+		// Return the result
+		return wp_send_json_success($result);
 	}
 
 	
@@ -190,11 +206,11 @@ class Helper {
 			switch ( $default['icon_type'] ) {
 
 				case 'image':
-					$icon_html = '<i><img src="' . $default['image']['url'] . '"/></i>';
+					$icon_html = '<i><img src="' . esc_url($default['image']['url']) . '"/></i>';
 					break;
 
 				case 'text':
-					$icon_html = '<i class="">' . $default['text'] . '</i>';
+					$icon_html = '<i class="">' . esc_attr( $default['text'] ) . '</i>';
 					break;
 			}
 
@@ -229,11 +245,11 @@ class Helper {
 			switch ( $settings[ $control_name . '_icon_type' ] ) {
 
 				case 'image':
-					$icon_html = '<i><img src="' . $settings[ $control_name . '_image' ]['url'] . '" /></i>';
+					$icon_html = '<i><img src="' . esc_url($settings[ $control_name . '_image' ]['url']) . '" /></i>';
 					break;
 
 				case 'text':
-					$icon_html = '<i class="">' . $settings[ $control_name . '_text' ] . '</i>';
+					$icon_html = '<i class="">' . esc_attr( $settings[ $control_name . '_text' ] ) . '</i>';
 					break;
 			}
 
@@ -317,7 +333,7 @@ class Helper {
 			$icon_html .= '</span>';
 		}
 
-		return $icon_html;
+		return Helper::eae_wp_kses( $icon_html );
 	}
 
 

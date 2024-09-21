@@ -3,8 +3,8 @@ Contributors: wpvibes, hardiksharma, satishprajapati, webtechpooja, priyanshii5,
 Tags: elementor, addons, elements, elementor addon, elementor widget, page-builder, WordPress page builder, elementor extensions, elementor page builder
 Requires at least: 5.0
 Requires PHP: 7.0
-Tested up to: 6.4
-Stable tag: trunk
+Tested up to: 6.5
+Stable tag: 1.13.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,20 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 8. Elementor addon widgets section
 
 == Changelog ==
+= 1.13.8 =
+* Fixed : Elemnentor 3.24 compatibility added
+
+= 1.13.7 = 
+* Fixed : Modal Popup CF7 compatibility issue fixed
+* Fixed : Modal Popup Loop Carousel duplicate slide content isssue fixed
+* Fixed : Comparison Table mobile view header issue fixed
+
+
+= 1.13.6 =
+* Fixed : Modal Poupup video issue fixed, video plays continuously even after closing the popup
+* Fixed : Code structure improved in widgets
+* Fixed : Thumbnail Slider swiper latest compatibility added
+
 = 1.13.5 =
 * Fixed : Issue with Background Slider extension after last release
 
